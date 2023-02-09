@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OfertasService } from '../ofertas.service';
 import { Oferta } from '../shared/oferta.model';
+import { firstValueFrom } from 'rxjs';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.component.html',
@@ -10,19 +12,26 @@ import { Oferta } from '../shared/oferta.model';
 export class AppHomeComponent implements OnInit {
   public oferta!: Oferta[];
 
+  //  this.oferta = this.ofertaservice.getOfertas();
+
   constructor(private ofertaservice: OfertasService) {}
 
+  public async loadCategories() {
+    const categories$ = this.ofertaservice.getOfertas();
+    this.oferta = await firstValueFrom(categories$);
+
+    return this.oferta;
+  }
+
   ngOnInit(): void {
-    //  this.oferta = this.ofertaservice.getOfertas();
+    this.loadCategories();
 
-    this.ofertaservice
-      .getOfertas2()
-      .then((ofertas: Oferta[]) => {
-        console.log('function resolved after 3 seconds');
-        this.oferta = ofertas;
-      })
-      .catch((erro) => console.log(erro));
-
+    // this.ofertaservice
+    //   .getOfertas()
+    //   .then((ofertas: Oferta[]) => {
+    //            this.oferta = ofertas;
+    //   })
+    //   .catch((erro) => console.log(erro));
     /* 
     
     fisrt = new OfertasService();
