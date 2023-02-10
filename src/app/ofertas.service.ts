@@ -3,15 +3,30 @@ import { Injectable } from '@angular/core';
 import { Oferta } from './shared/oferta.model';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { URL_API } from './app.api';
 
 @Injectable()
 export class OfertasService {
+  // private ulr_api = 'http://localhost:3000/ofertas';
+
   constructor(private http: HttpClient) {}
 
   public getOfertas(): Observable<Oferta[]> {
     return this.http
-      .get('http://localhost:3000/ofertas?destaque=true')
+      .get(`${URL_API}?destaque=true`)
       .pipe(map((resposta: any) => resposta));
+  }
+
+  public getOfertasPorCategoria(categoria: string) {
+    return this.http
+      .get(`${URL_API}?categoria=${categoria}`)
+      .pipe(map((resposta: any) => resposta));
+  }
+
+  public getOfertasPorID(id: number) {
+    return this.http
+      .get(`${URL_API}?id=${id}`)
+      .pipe(map((response: any) => response.shift())); //ou response[0]
   }
 }
 

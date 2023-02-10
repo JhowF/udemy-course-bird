@@ -18,7 +18,11 @@
             {{ ofertas.descricao_oferta }}
           </p>
           <p class="preco">{{ ofertas.valor }}</p>
-          <a href="#" class="btn btn-outline-primary">Ver ofertas</a>
+          <a
+            [routerLink]="['/ofertas', ofertas.id]"
+            class="btn btn-outline-primary"
+            >Ver ofertas</a
+          >
         </div>
       </div>
     </div>
