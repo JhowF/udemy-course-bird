@@ -1,0 +1,13 @@
+.ordem-compra {
+  margin-top: 50px;
+  margin-bottom: 150px;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.margin-top {
+  margin: 20px;
+}

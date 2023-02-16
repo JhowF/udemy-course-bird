@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Oferta } from './shared/oferta.model';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { retry } from 'rxjs/operators';
 import { URL_API } from './app.api';
 
 @Injectable()
@@ -13,20 +14,45 @@ export class OfertasService {
 
   public getOfertas(): Observable<Oferta[]> {
     return this.http
-      .get(`${URL_API}?destaque=true`)
+      .get(`${URL_API}ofertas?destaque=true`)
       .pipe(map((resposta: any) => resposta));
   }
 
   public getOfertasPorCategoria(categoria: string) {
     return this.http
-      .get(`${URL_API}?categoria=${categoria}`)
+      .get(`${URL_API}ofertas?categoria=${categoria}`)
       .pipe(map((resposta: any) => resposta));
   }
 
   public getOfertasPorID(id: number) {
     return this.http
-      .get(`${URL_API}?id=${id}`)
+      .get(`${URL_API}ofertas?id=${id}`)
       .pipe(map((response: any) => response.shift())); //ou response[0]
+  }
+
+  public getComoUsarOfertaPorId(id: number) {
+    return this.http.get(`${URL_API}como-usar?id=${id}`).pipe(
+      map((resposta: any) => {
+        return resposta[0].descricao;
+      })
+    );
+  }
+
+  public getOndeFicaPorId(id: number) {
+    return this.http
+      .get(`${URL_API}onde-fica?id=${id}`)
+      .pipe(map((resposta: any) => resposta[0].descricao));
+  }
+
+  public pesquisaOfertas(termo: string): Observable<any> {
+    return this.http
+      .get(`${URL_API}ofertas?descricao_oferta_like=${termo}`)
+      .pipe(
+        retry(10),
+        map((respota: any) => {
+          return respota;
+        })
+      );
   }
 }
 

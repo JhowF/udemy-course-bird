@@ -17,7 +17,7 @@
           <p class="card-text">
             {{ ofertas.descricao_oferta }}
           </p>
-          <p class="preco">{{ ofertas.valor }}</p>
+          <p class="preco">{{ ofertas.valor | currency : "BRL" }}</p>
           <a
             [routerLink]="['/ofertas', ofertas.id]"
             class="btn btn-outline-primary"
