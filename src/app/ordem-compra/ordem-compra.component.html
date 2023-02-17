@@ -1,5 +1,8 @@
 <div class="container">
-  <div class="ordem-compra">
+  <div
+    class="ordem-compra"
+    *ngIf="idPedidoCompra === undefined; else mgsPedidoRealizado"
+  >
     <form novalidate>
       <h5>Sua Compra</h5>
       <hr />
@@ -204,4 +207,9 @@
       </button>
     </form>
   </div>
+  <ng-template class="ordem-compra" #mgsPedidoRealizado>
+    <app-ordem-compra-sucesso
+      [idPedido]="idPedidoCompra"
+    ></app-ordem-compra-sucesso>
+  </ng-template>
 </div>

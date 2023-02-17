@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrdemComporaService } from './ordem-compra.service';
+import { OrdemComporaService } from '../ordem-compra.service';
 import { Pedido } from '../shared/pedido.model';
 @Component({
   selector: 'app-ordem-compra',
@@ -8,6 +8,7 @@ import { Pedido } from '../shared/pedido.model';
   providers: [OrdemComporaService],
 })
 export class OrdemCompraComponent implements OnInit {
+  public idPedidoCompra!: number;
   //Pedido
   public pedido: Pedido = new Pedido('', '', '', '');
 
@@ -37,7 +38,7 @@ export class OrdemCompraComponent implements OnInit {
   }
 
   atualizarEndereco(inputEndereco: string): void {
-    this.endereco = inputEndereco;
+    this.endereco = inputEndereco.toLowerCase();
 
     this.enderecoPrimitivo = false;
     if (inputEndereco.length > 3) {
@@ -89,10 +90,12 @@ export class OrdemCompraComponent implements OnInit {
   }
 
   public confirmaCompra(): void {
-    this.pedido.endereco = this.endereco;
+    this.pedido.endereco = this.endereco.replaceAll(' ', '.');
     this.pedido.numero = this.numero;
     this.pedido.complemento = this.complemento;
     this.pedido.formaPagamento = this.formaPagamento;
-    this.ordemCompraService.efetivarComprar(this.pedido);
+    this.ordemCompraService
+      .efetivarComprar(this.pedido)
+      .subscribe((response: any) => (this.idPedidoCompra = response.id));
   }
 }
